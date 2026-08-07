@@ -21,16 +21,17 @@ export default function Envelope({ onOpened }: { onOpened: () => void }) {
   }
 
   return (
-    <div className="fixed inset-0 w-screen h-dvh overflow-hidden invite-gradient select-none">
+    <div className="absolute inset-0 overflow-hidden invite-gradient select-none">
       <EnvelopeFoldLines />
 
       <div className="absolute inset-0" style={{ perspective: 1200 }}>
         <motion.div
           className="absolute top-0 left-0 w-full origin-top"
           style={{
-            height: "48%",
+            height: "50%",
             backfaceVisibility: "hidden",
             clipPath: "polygon(0% 0%, 100% 0%, 50% 100%)",
+            filter: "drop-shadow(0 14px 18px rgba(58, 45, 15, 0.18))",
           }}
           initial={{ rotateX: 0 }}
           animate={{ rotateX: phase === "flapOpening" ? -180 : 0 }}
@@ -39,7 +40,7 @@ export default function Envelope({ onOpened }: { onOpened: () => void }) {
             if (phase === "flapOpening") onOpened();
           }}
         >
-          <div className="invite-gradient absolute inset-0 border-b border-[#D8D2C4]/40" />
+          <div className="invite-gradient absolute inset-0 border-b border-[#B8AE93]/60" />
         </motion.div>
       </div>
 
@@ -72,6 +73,15 @@ export default function Envelope({ onOpened }: { onOpened: () => void }) {
 }
 
 function EnvelopeFoldLines() {
+  // Top/bottom flaps read as the dominant, full-width folds (corner to corner).
+  // Left/right flaps are inset and converge slightly higher, so they read as
+  // shorter, secondary folds tucked under the top/bottom ones — and the top
+  // flap's line is drawn a touch past the others, so it visually overlaps.
+  const topApex = 50;
+  const bottomApex = 46;
+  const sideApex = 48;
+  const sideInset = 8;
+
   return (
     <svg
       className="absolute inset-0 w-full h-full"
@@ -79,11 +89,27 @@ function EnvelopeFoldLines() {
       preserveAspectRatio="none"
       aria-hidden="true"
     >
-      <g stroke="#D8D2C4" strokeWidth="0.15" opacity="0.5">
-        <line x1="0" y1="0" x2="50" y2="48" />
-        <line x1="100" y1="0" x2="50" y2="48" />
-        <line x1="0" y1="100" x2="50" y2="48" />
-        <line x1="100" y1="100" x2="50" y2="48" />
+      <g stroke="#8C7F60" strokeWidth="0.6" opacity="0.16" strokeLinecap="round">
+        <line x1="0" y1="0" x2="50" y2={topApex} />
+        <line x1="100" y1="0" x2="50" y2={topApex} />
+        <line x1="0" y1="100" x2="50" y2={bottomApex} />
+        <line x1="100" y1="100" x2="50" y2={bottomApex} />
+        <line x1="0" y1={sideInset} x2="50" y2={sideApex} />
+        <line x1="0" y1={100 - sideInset} x2="50" y2={sideApex} />
+        <line x1="100" y1={sideInset} x2="50" y2={sideApex} />
+        <line x1="100" y1={100 - sideInset} x2="50" y2={sideApex} />
+      </g>
+      <g stroke="#A69874" strokeWidth="0.32" opacity="0.9" strokeLinecap="round">
+        <line x1="0" y1="0" x2="50" y2={topApex} />
+        <line x1="100" y1="0" x2="50" y2={topApex} />
+        <line x1="0" y1="100" x2="50" y2={bottomApex} />
+        <line x1="100" y1="100" x2="50" y2={bottomApex} />
+      </g>
+      <g stroke="#BBAF93" strokeWidth="0.24" opacity="0.65" strokeLinecap="round">
+        <line x1="0" y1={sideInset} x2="50" y2={sideApex} />
+        <line x1="0" y1={100 - sideInset} x2="50" y2={sideApex} />
+        <line x1="100" y1={sideInset} x2="50" y2={sideApex} />
+        <line x1="100" y1={100 - sideInset} x2="50" y2={sideApex} />
       </g>
     </svg>
   );
@@ -100,29 +126,25 @@ function Seal({ path }: { path: string }) {
         </radialGradient>
       </defs>
       <path d={path} fill="url(#sealGradient)" />
-      <Sprig />
+      <EngravedHeart />
     </svg>
   );
 }
 
-function Sprig() {
+function EngravedHeart() {
   return (
     <g
-      transform="translate(50 52) scale(0.55)"
+      transform="translate(50 51) scale(0.62)"
       fill="none"
       stroke="#7A5B28"
-      strokeWidth="1.4"
+      strokeWidth="1.5"
       strokeLinecap="round"
+      strokeLinejoin="round"
     >
-      <path d="M0 26 C -1 10, 1 -6, 0 -24" />
-      <path d="M0 14 C -8 10, -14 4, -18 -4" />
-      <path d="M0 4 C 8 0, 14 -6, 18 -14" />
-      <path d="M0 -8 C -6 -12, -9 -18, -8 -26" />
-      <circle cx="-18" cy="-4" r="3.2" />
-      <circle cx="18" cy="-14" r="3.2" />
-      <circle cx="0" cy="-26" r="3.6" />
-      <path d="M-9 -1 C -12 -3, -12 -7, -9 -9" />
-      <path d="M9 -11 C 12 -13, 12 -17, 9 -19" />
+      <path d="M0,13 C-2,9 -12,3 -12,-3 C-12,-9 -5,-12 0,-4 C5,-12 12,-9 12,-3 C12,3 2,9 0,13 Z" />
+      <path d="M-16,4 C-19,2 -19,-2 -16,-4" strokeWidth="1.1" opacity="0.75" />
+      <path d="M16,4 C19,2 19,-2 16,-4" strokeWidth="1.1" opacity="0.75" />
+      <path d="M-3,-18 C-2,-20 2,-20 3,-18" strokeWidth="1.1" opacity="0.7" />
     </g>
   );
 }

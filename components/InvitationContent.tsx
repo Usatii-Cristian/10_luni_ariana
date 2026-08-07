@@ -2,11 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { OrnamentDivider, CornerFlourish } from "./Ornament";
 
 const START_DATE = new Date(2025, 9, 8); // 8 Octombrie 2025
-const MET_LOCATION = "Cluj-Napoca";
-const QUOTE =
-  "„Fiecare zi cu tine e o pagină nouă din cea mai frumoasă poveste pe care o scriem împreună.”";
+const QUOTE = "„Nu e o poveste perfectă. E doar a noastră — și exact așa o vreau.”";
 
 function computeTimeTogether(start: Date) {
   const now = new Date();
@@ -63,6 +62,7 @@ export default function InvitationContent() {
     <div className="invite-gradient min-h-dvh w-full">
       <HeroSection />
       <PhotoSection />
+      <NoteSection />
       <CounterSection />
     </div>
   );
@@ -75,7 +75,7 @@ function HeroSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center px-6 pt-16 pb-14 text-center"
+      className="flex flex-col items-center px-6 pt-16 pb-10 text-center"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -89,8 +89,10 @@ function HeroSection() {
       <h1 className="mt-3 font-cursive text-6xl leading-none text-gold">
         Ariana &amp; Cristi
       </h1>
-      <p className="mt-4 text-sm text-ink-soft">
-        Doi oameni, o poveste, în fiecare zi
+      <p className="mt-5 max-w-[300px] text-[15px] leading-relaxed text-ink-soft">
+        N-a fost nimic ieșit din comun în ziua aceea. Doar noi doi, vorbind ca
+        și cum ne știam de mult. De atunci, zilele obișnuite au început să
+        pară, cumva, altfel.
       </p>
     </motion.section>
   );
@@ -103,17 +105,44 @@ function PhotoSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5 }}
-      className="px-6 pb-16"
+      className="px-6 pb-14"
     >
-      <div className="relative mx-auto max-w-[420px] overflow-hidden rounded-xl">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/poza-ariana-cristi.jpg"
-          alt="Ariana și Cristi împreună"
-          className="w-full h-auto object-cover rounded-xl"
-        />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-cream-dark/90" />
+      <div className="relative mx-auto max-w-[420px]">
+        <CornerFlourish className="absolute -left-2 -top-2 h-9 w-9" />
+        <CornerFlourish className="absolute -right-2 -top-2 h-9 w-9 -scale-x-100" />
+        <div className="relative overflow-hidden rounded-xl">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/poza-ariana-cristi.jpg"
+            alt="Ariana și Cristi împreună"
+            className="w-full h-auto object-cover rounded-xl"
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-cream-dark/90" />
+        </div>
       </div>
+      <p className="mx-auto mt-4 max-w-[300px] text-center text-sm italic text-ink-soft">
+        Poza asta n-are nimic aranjat. Suntem doar noi, așa cum suntem de
+        obicei.
+      </p>
+    </motion.section>
+  );
+}
+
+function NoteSection() {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col items-center px-6 pb-14 text-center"
+    >
+      <OrnamentDivider />
+      <p className="mx-auto mt-6 max-w-[320px] font-serif text-lg italic leading-relaxed text-ink">
+        Nu știu exact în ce zi s-a schimbat ceva. Poate într-o seară
+        obișnuită, poate într-o discuție care a ținut până târziu. Ce știu
+        sigur e că, de atunci, ești primul gând bun din fiecare dimineață.
+      </p>
     </motion.section>
   );
 }
@@ -130,7 +159,12 @@ function CounterSection() {
       transition={{ duration: 0.5 }}
       className="flex flex-col items-center px-6 pb-24 text-center"
     >
-      <p className="font-serif text-2xl tracking-wide text-ink">
+      <p className="max-w-[280px] text-sm text-ink-soft">
+        Numărăm timpul nu ca să bifăm zile, ci pentru că fiecare zi cu tine
+        chiar contează.
+      </p>
+
+      <p className="mt-6 font-serif text-2xl tracking-wide text-ink">
         8 Octombrie 2025
       </p>
 
@@ -144,17 +178,21 @@ function CounterSection() {
         luni împreună
       </p>
 
-      <div className="mt-10 flex items-center gap-6">
-        <IconBadge label="Data">
-          <CalendarIcon />
-        </IconBadge>
-        <IconBadge label="Locul">
-          <PinIcon />
-        </IconBadge>
-        <IconBadge label="Mesaj" onClick={() => setShowModal(true)}>
-          <HeartIcon />
-        </IconBadge>
-      </div>
+      <p className="mt-6 max-w-[280px] text-sm text-ink-soft">
+        Și simțim că abia am început.
+      </p>
+
+      <motion.button
+        type="button"
+        aria-label="Un gând pentru tine"
+        onClick={() => setShowModal(true)}
+        className="mt-8 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-b from-gold-light to-gold text-card shadow-lg"
+        animate={{ scale: [1, 1.06, 1] }}
+        transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+        whileTap={{ scale: 0.92 }}
+      >
+        <HeartIcon />
+      </motion.button>
 
       <AnimatePresence>
         {showModal && (
@@ -175,9 +213,6 @@ function CounterSection() {
               onClick={(e) => e.stopPropagation()}
             >
               <p className="font-serif italic text-ink">{QUOTE}</p>
-              <p className="mt-4 text-xs uppercase tracking-[0.15em] text-gold">
-                {MET_LOCATION}
-              </p>
             </motion.div>
           </motion.div>
         )}
@@ -186,48 +221,9 @@ function CounterSection() {
   );
 }
 
-function IconBadge({
-  label,
-  onClick,
-  children,
-}: {
-  label: string;
-  onClick?: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      onClick={onClick}
-      className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-b from-gold-light to-gold text-card shadow-md transition-transform active:scale-95"
-    >
-      {children}
-    </button>
-  );
-}
-
-function CalendarIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.6">
-      <rect x="4" y="5" width="16" height="15" rx="2" />
-      <path d="M8 3v4M16 3v4M4 10h16" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function PinIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.6">
-      <path d="M12 21s7-6.5 7-11.5A7 7 0 1 0 5 9.5C5 14.5 12 21 12 21Z" />
-      <circle cx="12" cy="9.5" r="2.3" />
-    </svg>
-  );
-}
-
 function HeartIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
+    <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor">
       <path d="M12 20.5s-7.5-4.6-10-9.3C0.4 7.7 2 4.5 5.4 4c2-.3 3.8.7 4.6 2.4C10.8 4.7 12.6 3.7 14.6 4c3.4.5 5 3.7 3.4 7.2-2.5 4.7-10 9.3-10 9.3Z" />
     </svg>
   );
