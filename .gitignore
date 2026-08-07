@@ -36,6 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# design reference clips (not part of the deployed site)
+public/*.mp4
+public/*.MP4
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

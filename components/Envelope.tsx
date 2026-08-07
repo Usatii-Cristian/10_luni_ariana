@@ -22,6 +22,7 @@ export default function Envelope({ onOpened }: { onOpened: () => void }) {
 
   return (
     <div className="absolute inset-0 overflow-hidden invite-gradient select-none">
+      <EnvelopePanels />
       <EnvelopeFoldLines />
 
       <div className="absolute inset-0" style={{ perspective: 1200 }}>
@@ -44,44 +45,78 @@ export default function Envelope({ onOpened }: { onOpened: () => void }) {
         </motion.div>
       </div>
 
-      <AnimatePresence>
-        {phase === "closed" && (
-          <motion.button
-            key="seal"
-            type="button"
-            aria-label="Deschide plicul"
-            onClick={handleTap}
-            className="absolute z-10 cursor-pointer"
-            style={{
-              left: "50%",
-              top: "48%",
-              width: "clamp(85px, 25vw, 110px)",
-              height: "clamp(85px, 25vw, 110px)",
-              transform: "translate(-50%, -50%)",
-            }}
-            initial={{ scale: 1, opacity: 1 }}
-            animate={{ scale: [1, 1.03, 1] }}
-            exit={{ scale: 0, opacity: 0, transition: { duration: 0.25, ease: "easeIn" } }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Seal path={sealPath} />
-          </motion.button>
-        )}
-      </AnimatePresence>
+      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+        <AnimatePresence>
+          {phase === "closed" && (
+            <motion.button
+              key="seal"
+              type="button"
+              aria-label="Deschide plicul"
+              onClick={handleTap}
+              className="pointer-events-auto cursor-pointer"
+              style={{
+                width: "clamp(85px, 25vw, 110px)",
+                height: "clamp(85px, 25vw, 110px)",
+              }}
+              initial={{ scale: 1, opacity: 1 }}
+              animate={{ scale: [1, 1.03, 1] }}
+              exit={{ scale: 0, opacity: 0, transition: { duration: 0.25, ease: "easeIn" } }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <Seal path={sealPath} />
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
 
-function EnvelopeFoldLines() {
-  // Top/bottom flaps read as the dominant, full-width folds (corner to corner).
-  // Left/right flaps are inset and converge slightly higher, so they read as
-  // shorter, secondary folds tucked under the top/bottom ones — and the top
-  // flap's line is drawn a touch past the others, so it visually overlaps.
-  const topApex = 50;
-  const bottomApex = 46;
-  const sideApex = 48;
-  const sideInset = 8;
+function EnvelopePanels() {
+  // Four soft-shaded panels (top/bottom/left/right), each lit a touch
+  // differently, so the fold reads as real paper catching light rather
+  // than flat color cut by lines. The apex matches the seal exactly.
+  const apex = "50% 50%";
+  const panels: { clipPath: string; gradient: string }[] = [
+    {
+      clipPath: `polygon(0% 0%, 100% 0%, ${apex})`,
+      gradient:
+        "linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 55%, rgba(110,90,50,0.07) 100%)",
+    },
+    {
+      clipPath: `polygon(0% 100%, 100% 100%, ${apex})`,
+      gradient:
+        "linear-gradient(0deg, rgba(255,255,255,0.16) 0%, rgba(110,90,50,0.1) 100%)",
+    },
+    {
+      clipPath: `polygon(0% 0%, 0% 100%, ${apex})`,
+      gradient:
+        "linear-gradient(115deg, rgba(110,90,50,0.1) 0%, rgba(255,255,255,0.08) 100%)",
+    },
+    {
+      clipPath: `polygon(100% 0%, 100% 100%, ${apex})`,
+      gradient:
+        "linear-gradient(245deg, rgba(110,90,50,0.1) 0%, rgba(255,255,255,0.08) 100%)",
+    },
+  ];
 
+  return (
+    <>
+      {panels.map((panel, i) => (
+        <div
+          key={i}
+          className="absolute inset-0"
+          style={{ clipPath: panel.clipPath, background: panel.gradient }}
+        />
+      ))}
+    </>
+  );
+}
+
+function EnvelopeFoldLines() {
+  // A single, faint set of corner-to-center seams for a touch of crispness
+  // on top of the panel shading — the apex matches the seal's position
+  // exactly, so the seal sits right where the folds meet.
   return (
     <svg
       className="absolute inset-0 w-full h-full"
@@ -89,27 +124,11 @@ function EnvelopeFoldLines() {
       preserveAspectRatio="none"
       aria-hidden="true"
     >
-      <g stroke="#8C7F60" strokeWidth="0.6" opacity="0.16" strokeLinecap="round">
-        <line x1="0" y1="0" x2="50" y2={topApex} />
-        <line x1="100" y1="0" x2="50" y2={topApex} />
-        <line x1="0" y1="100" x2="50" y2={bottomApex} />
-        <line x1="100" y1="100" x2="50" y2={bottomApex} />
-        <line x1="0" y1={sideInset} x2="50" y2={sideApex} />
-        <line x1="0" y1={100 - sideInset} x2="50" y2={sideApex} />
-        <line x1="100" y1={sideInset} x2="50" y2={sideApex} />
-        <line x1="100" y1={100 - sideInset} x2="50" y2={sideApex} />
-      </g>
-      <g stroke="#A69874" strokeWidth="0.32" opacity="0.9" strokeLinecap="round">
-        <line x1="0" y1="0" x2="50" y2={topApex} />
-        <line x1="100" y1="0" x2="50" y2={topApex} />
-        <line x1="0" y1="100" x2="50" y2={bottomApex} />
-        <line x1="100" y1="100" x2="50" y2={bottomApex} />
-      </g>
-      <g stroke="#BBAF93" strokeWidth="0.24" opacity="0.65" strokeLinecap="round">
-        <line x1="0" y1={sideInset} x2="50" y2={sideApex} />
-        <line x1="0" y1={100 - sideInset} x2="50" y2={sideApex} />
-        <line x1="100" y1={sideInset} x2="50" y2={sideApex} />
-        <line x1="100" y1={100 - sideInset} x2="50" y2={sideApex} />
+      <g stroke="#A69874" strokeWidth="0.22" opacity="0.4" strokeLinecap="round">
+        <line x1="0" y1="0" x2="50" y2="50" />
+        <line x1="100" y1="0" x2="50" y2="50" />
+        <line x1="0" y1="100" x2="50" y2="50" />
+        <line x1="100" y1="100" x2="50" y2="50" />
       </g>
     </svg>
   );

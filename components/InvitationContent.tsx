@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { OrnamentDivider, CornerFlourish } from "./Ornament";
 
 const START_DATE = new Date(2025, 9, 8); // 8 Octombrie 2025
-const QUOTE = "„Nu e o poveste perfectă. E doar a noastră — și exact așa o vreau.”";
+const NOTE_MESSAGE =
+  "Nu cred că ți-am spus-o destul de des: îți mulțumesc pentru fiecare zi obișnuită pe care am trăit-o alături de tine. N-a fost mereu perfect — au fost și zile grele, discuții în care nu ne-am înțeles din prima. Dar de fiecare dată am ales să rămânem, să vorbim, să continuăm. Și cred că exact asta contează cel mai mult.";
 
 function computeTimeTogether(start: Date) {
   const now = new Date();
@@ -77,12 +78,11 @@ function HeroSection() {
       transition={{ duration: 0.5 }}
       className="flex flex-col items-center px-6 pt-16 pb-10 text-center"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/ilustratie-cuplu.png"
-        alt="Ariana și Cristi"
-        className="mx-auto w-full max-w-[280px]"
-      />
+      <div className="relative mx-auto w-full max-w-[280px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/ilustratie-cuplu.png" alt="Ariana și Cristi" className="w-full" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-cream/95" />
+      </div>
       <h2 className="mt-8 font-serif tracking-[0.15em] uppercase text-sm text-ink">
         Începutul poveștii noastre
       </h2>
@@ -212,7 +212,9 @@ function CounterSection() {
               transition={{ duration: 0.25, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
             >
-              <p className="font-serif italic text-ink">{QUOTE}</p>
+              <p className="font-serif italic leading-relaxed text-ink">
+                {NOTE_MESSAGE}
+              </p>
             </motion.div>
           </motion.div>
         )}
@@ -223,8 +225,8 @@ function CounterSection() {
 
 function HeartIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor">
-      <path d="M12 20.5s-7.5-4.6-10-9.3C0.4 7.7 2 4.5 5.4 4c2-.3 3.8.7 4.6 2.4C10.8 4.7 12.6 3.7 14.6 4c3.4.5 5 3.7 3.4 7.2-2.5 4.7-10 9.3-10 9.3Z" />
+    <svg viewBox="-13 -12.5 26 26" className="h-7 w-7" fill="currentColor">
+      <path d="M0,13 C-2,9 -12,3 -12,-3 C-12,-9 -5,-12 0,-4 C5,-12 12,-9 12,-3 C12,3 2,9 0,13 Z" />
     </svg>
   );
 }
