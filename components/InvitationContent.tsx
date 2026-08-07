@@ -1,10 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { OrnamentDivider, CornerFlourish } from "./Ornament";
+import { OrnamentDivider } from "./Ornament";
 
 const START_DATE = new Date(2025, 9, 8); // 8 Octombrie 2025
+const IMAGE_FADE_MASK =
+  "linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%)";
+const imageFadeStyle: CSSProperties = {
+  WebkitMaskImage: IMAGE_FADE_MASK,
+  maskImage: IMAGE_FADE_MASK,
+};
 const NOTE_MESSAGE =
   "Nu cred că ți-am spus-o destul de des: îți mulțumesc pentru fiecare zi obișnuită pe care am trăit-o alături de tine. N-a fost mereu perfect — au fost și zile grele, discuții în care nu ne-am înțeles din prima. Dar de fiecare dată am ales să rămânem, să vorbim, să continuăm. Și cred că exact asta contează cel mai mult.";
 
@@ -78,11 +84,13 @@ function HeroSection() {
       transition={{ duration: 0.5 }}
       className="flex flex-col items-center px-6 pt-16 pb-10 text-center"
     >
-      <div className="relative mx-auto w-full max-w-[280px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/ilustratie-cuplu.png" alt="Ariana și Cristi" className="w-full" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-cream/95" />
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/ilustratie-cuplu.png"
+        alt="Ariana și Cristi"
+        className="mx-auto w-full max-w-[300px]"
+        style={imageFadeStyle}
+      />
       <h2 className="mt-8 font-serif tracking-[0.15em] uppercase text-sm text-ink">
         Începutul poveștii noastre
       </h2>
@@ -107,19 +115,13 @@ function PhotoSection() {
       transition={{ duration: 0.5 }}
       className="px-6 pb-14"
     >
-      <div className="relative mx-auto max-w-[420px]">
-        <CornerFlourish className="absolute -left-2 -top-2 h-9 w-9" />
-        <CornerFlourish className="absolute -right-2 -top-2 h-9 w-9 -scale-x-100" />
-        <div className="relative overflow-hidden rounded-xl">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/poza-ariana-cristi.jpg"
-            alt="Ariana și Cristi împreună"
-            className="w-full h-auto object-cover rounded-xl"
-          />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-cream-dark/90" />
-        </div>
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/poza-ariana-cristi.jpg"
+        alt="Ariana și Cristi împreună"
+        className="mx-auto w-full max-w-[420px] h-auto object-cover"
+        style={imageFadeStyle}
+      />
       <p className="mx-auto mt-4 max-w-[300px] text-center text-sm italic text-ink-soft">
         Poza asta n-are nimic aranjat. Suntem doar noi, așa cum suntem de
         obicei.
