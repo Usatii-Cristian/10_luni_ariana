@@ -86,7 +86,7 @@ function HeroSection() {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/ilustratie-cuplu.png"
+        src="/ilustratie-cuplu.webp"
         alt="Ariana și Cristi"
         className="mx-auto w-full max-w-[300px]"
         style={imageFadeStyle}
