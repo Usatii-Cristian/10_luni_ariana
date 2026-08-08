@@ -22,11 +22,6 @@
   --font-cursive: var(--font-great-vibes);
 }
 
-html,
-body {
-  overscroll-behavior-y: none;
-}
-
 body {
   background: var(--color-cream);
   color: var(--color-ink);
